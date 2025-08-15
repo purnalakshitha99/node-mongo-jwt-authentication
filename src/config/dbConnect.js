@@ -2,8 +2,14 @@ const mongoose = require('mongoose');
 
 const dbConnect = async () =>{
     try{
- const connect = await mongoose.connect(process.env.CONNECTION_STRING)
-    console.log(`MongoDB connected: ${connect.connection.host}, ${connect.connection.name}`);
+        const uri = process.env.CONNECTION_STRING;
+        if (!uri) {
+            throw new Error('Missing CONNECTION_STRING environment variable');
+        }
+        const connect = await mongoose.connect(uri, {
+            // optional mongoose settings can go here
+        });
+        console.log(`MongoDB connected: ${connect.connection.host}, ${connect.connection.name}`);
     }
     catch(err){
         console.log(err);

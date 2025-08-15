@@ -1,18 +1,22 @@
 const express = require("express");
-const dotenv = require("dotenv").config();
+const path = require('path');
+// load .env located next to this file (src/.env)
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+const dbConnect = require("./config/dbConnect");
+
+
+dbConnect();
 
 const app = express();
 
 //middleware
-
 app.use(express.json());
 
 //routes
 
 
-//Start the Server
-
-const PORT = process.env.PORT || 7001;
+// Start the Server (use fallback port to avoid `undefined`)
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
