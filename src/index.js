@@ -1,7 +1,4 @@
 const express = require("express");
-const path = require('path');
-// load .env located next to this file (src/.env)
-require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 const dbConnect = require("./config/dbConnect");
 
 
