@@ -1,7 +1,7 @@
 const express = require("express");
-const path = require('path');
-// load .env located next to this file (src/.env)
-require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+require("dotenv").config();
+const authRoutes = require("./routes/authRoutes.js")
+
 const dbConnect = require("./config/dbConnect");
 
 
@@ -13,6 +13,9 @@ const app = express();
 app.use(express.json());
 
 //routes
+
+const BASE_URL = "/api/v1"
+app.use(`${BASE_URL}/auth`,authRoutes)
 
 
 // Start the Server (use fallback port to avoid `undefined`)
