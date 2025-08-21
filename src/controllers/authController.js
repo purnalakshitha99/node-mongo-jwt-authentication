@@ -4,11 +4,11 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const generateToken = (user)=>{
-return jwt.sign({id:user.id, role:user.role},process.env.JWT_SECRET,{
-    expiresIn:process.env.JWT_EXPIRES_IN,
-});
-} 
+const generateToken = (user) => {
+  return jwt.sign({ id: user.id, role: user.role , username: user.username }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+};
 
 const register = async (req, res) => {
   const { username, password, role } = req.body;
@@ -44,30 +44,36 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { username, password } = req.body;
+  try {
+    const { username, password } = req.body;
 
-  const user = await User.findOne({ username });
+    const user = await User.findOne({ username });
 
-  if (!user) {
-    return res.status(404).json({
-      message: "user not found",
+    if (!user) {
+      return res.status(404).json({
+        message: "user not found",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(500).json({
+        message: "invalid credentials",
+      });
+    }
+
+    const token = generateToken(user);
+
+    return res.status(200).json({
+      message: "login successfully",
+      token: token,
     });
-  }
-
-  const isMatch = await bcrypt.compare(password, user.password);
-
-  if (!isMatch) {
+  } catch (error) {
     return res.status(500).json({
-      message: "invalid credentials",
+      message: error.message,
     });
   }
-
-  const token = generateToken(user);
-
-  return res.status(200).json({
-    message: "login successfully",
-    token : token
-  })
 };
 
-module.exports = { register,login };
+module.exports = { register, login };
