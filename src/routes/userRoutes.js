@@ -1,23 +1,26 @@
 const express = require("express");
 const router = express.Router();
+const verifyToken = require("./../middleware/authMiddleware.js")
 
-//admin
-router.get("/admin",(req,res)=>{
+//Only admin can access this point
+router.get("/admin",verifyToken,(req,res)=>{
     res.json({
         message:"Welcome Admin"
     })
 });
 
-//manager
+//Both admin and manager access this route
 router.get("/manager",(req,res)=>{
     res.json({
         message:"Welcome Manager"
     })
 })
 
-//user
+//All can access this router
 router.get("/user",(req,res)=>{
     res.json({
         message:"Welcome User"
     })
 })
+
+module.exports = router;
