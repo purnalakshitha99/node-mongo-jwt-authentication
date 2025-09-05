@@ -15,7 +15,17 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
         enum:["user","admin","manager"]
-    }
+    },
+    contact_number:{
+        type:String,
+    },
+    address:{
+        type:String,
+
+    },
+    birth_date:{
+        type:Date,
+    },
 })
 
 
