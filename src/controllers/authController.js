@@ -11,9 +11,9 @@ const generateToken = (user) => {
 };
 
 const register = async (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password, role, contact_number, address, birth_date } = req.body;
 
-  if (!username || !password || !role) {
+  if (!username || !password || !birth_date ) {
     return res
       .status(400)
       .json({ message: "Please provide all required fields" });
@@ -26,6 +26,9 @@ const register = async (req, res) => {
       username,
       password: hashedPassword,
       role,
+      contact_number,
+      address,
+      birth_date,
     });
 
     await newUser.save();
